@@ -2,10 +2,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./component/navbar/Navbar";
 import Task from "./page/task/Task";
 import {APP_ROUTES} from "./config/routes.ts";
-import {KanbanBoard} from "./page/tasksKanbanBoard/TasksKanbanBoard.tsx";
-import BusCrudPage from "./page/busCRUD/BusCrudPage";
-import ViewBus from "./page/busCRUD/ViewBus";
-import EditBus from "./page/busCRUD/EditBus";
+import TasksPage from "./page/TasksPage.tsx";
+import BusesPage from "./page/BusesPage.tsx";
+import ViewBusPage from "./page/ViewBusPage.tsx";
+import EditBusPage from "./page/EditBusPage.tsx";
 
 export default function App() {
     return (
@@ -14,10 +14,10 @@ export default function App() {
 
             <Routes>
                 <Route path={APP_ROUTES.TASK} element={<Task />} />
-                <Route path={APP_ROUTES.BUS_CRUD} element={<BusCrudPage />} />
-                <Route path={`${APP_ROUTES.BUS_CRUD}/:id`} element={<ViewBus />} />
-                <Route path={`${APP_ROUTES.BUS_CRUD}/:id/edit`} element={<EditBus />} />
-                <Route path={APP_ROUTES.TASKS} element={<KanbanBoard />} />
+                <Route path={APP_ROUTES.BUS_CRUD} element={<BusesPage />} />
+                <Route path={`${APP_ROUTES.BUS_CRUD}/:id`} element={<ViewBusPage />} />
+                <Route path={`${APP_ROUTES.BUS_CRUD}/:id/edit`} element={<EditBusPage />} />
+                <Route path={APP_ROUTES.TASKS} element={<TasksPage />} />
             </Routes>
         </BrowserRouter>
     );
