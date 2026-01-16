@@ -1,56 +1,44 @@
-import { Link } from 'react-router-dom';
-import type { Bus } from '../types/bus.type';
-import { useState } from 'react';
-import { ConfirmPopup } from '../../../shared/ui/ConfirmPopup/ConfirmPopup';
+import {Link} from 'react-router-dom';
+import type {Bus} from '../types/bus.type';
+import {IconButton} from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Props {
-  bus: Bus;
-  onDelete: (id: number) => void;
+    bus: Bus,
+    onEdit?: (id: number) => void,
+    onDeleteClick: (bus: Bus) => void,
+    onDelete?: (id: number) => (Promise<void> | void)
 }
 
-export function BusRow({ bus, onDelete }: Props) {
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+export function BusRow({bus, onEdit, onDeleteClick}: Props) {
+    const statusText = bus.status === 'operational' ? 'Üzemképes' : 'Karbantartás alatt áll';
 
-  const handleDelete = async () => {
-    setDeleting(true);
-    try {
-      await onDelete(bus.id);
-    } finally {
-      setDeleting(false);
-      setShowConfirm(false);
-    }
-  };
-
-  return (
-    <>
-      <tr>
-        <td>{bus.id}</td>
-        <td>{bus.plate}</td>
-        <td>{bus.model}</td>
-        <td>{bus.status}</td>
-        <td>{bus.capacity}</td>
-        <td>
-          <Link to={`./${bus.id}`}>Megtekint</Link>
-          {' | '}
-          <Link to={`./${bus.id}/edit`}>Szerkeszt</Link>
-          {' | '}
-          <button onClick={() => setShowConfirm(true)}>Töröl</button>
-        </td>
-      </tr>
-      {showConfirm && (
+    return (
         <tr>
-          <td colSpan={6}>
-            <ConfirmPopup
-              message={`Biztosan törlöd a ${bus.plate} buszt?`}
-              onCancel={() => setShowConfirm(false)}
-              onConfirm={handleDelete}
-              loading={deleting}
-            />
-          </td>
+            <td>{bus.id}</td>
+            <td>{bus.plate}</td>
+            <td>{bus.model}</td>
+            <td>{statusText}</td>
+            <td>{bus.capacity}</td>
+            <td>
+                <IconButton size="small" aria-label="view" component={Link} to={`./${bus.id}`} sx={{color: 'white'}}>
+                    <VisibilityIcon fontSize="small"/>
+                </IconButton>
+                <IconButton
+                    size="small"
+                    aria-label="edit"
+                    onClick={() => onEdit?.(bus.id)}
+                    sx={{color: 'white'}}
+                >
+                    <EditIcon fontSize="small"/>
+                </IconButton>
+                <IconButton size="small" aria-label="delete" onClick={() => onDeleteClick(bus)} sx={{color: 'white'}}>
+                    <DeleteIcon fontSize="small"/>
+                </IconButton>
+            </td>
         </tr>
-      )}
-    </>
-  );
+    );
 }
 

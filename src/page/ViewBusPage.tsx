@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useBusQuery } from '../modules/bus';
 import { Page, Card, Title } from '../shared/common/styles/common.style';
 import {
@@ -8,7 +8,9 @@ import {
   detailLabelStyle,
   actionsContainerStyle
 } from '../modules/bus/style/viewBus.style';
-import { Button } from '@mui/material';
+import {
+  Button,
+} from '../shared/common';
 
 export default function ViewBusPage() {
   const { id } = useParams();
@@ -48,9 +50,6 @@ export default function ViewBusPage() {
         <div style={actionsContainerStyle}>
           <Button onClick={() => navigate(-1)} variant="outlined" sx={{ mr: 1 }}>
             Vissza
-          </Button>
-          <Button component={Link} to={`./edit`} variant="contained" color="primary">
-            Szerkeszt
           </Button>
         </div>
       </Card>

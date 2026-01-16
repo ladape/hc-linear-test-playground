@@ -11,12 +11,14 @@ export function ConfirmPopup({
   cancelLabel = 'Mégsem',
   loading = false,
   style,
+  isAbsolutePosition = true,
 }: ConfirmPopupProps) {
   const [confirmHover, setConfirmHover] = useState(false);
   const [cancelHover, setCancelHover] = useState(false);
 
   const containerStyle: CSSProperties = {
     ...containerStyleBase,
+    ...(isAbsolutePosition ? {} : { position: 'static' }),
     ...(style || {}),
   };
 

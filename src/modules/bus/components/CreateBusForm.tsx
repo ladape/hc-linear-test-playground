@@ -13,7 +13,7 @@ import {
   FormFooter,
   Button,
   FormTitle,
-} from '../style/createBusForm.style';
+} from '../../../shared/common';
 
 interface Props {
   initial?: Partial<Omit<Bus, 'id'>>;
@@ -128,6 +128,7 @@ export function CreateBusForm({ initial, onSubmit, onClose, open, submitLabel = 
                 value={form.plate}
                 onChange={(e) => setForm({ ...form, plate: e.target.value })}
                 placeholder="Pl: ABC123"
+                maxLength={10}
               />
               {errors.plate && <ErrorMessage>{errors.plate}</ErrorMessage>}
             </InputWithError>
@@ -142,6 +143,7 @@ export function CreateBusForm({ initial, onSubmit, onClose, open, submitLabel = 
                 value={form.model}
                 onChange={(e) => setForm({ ...form, model: e.target.value })}
                 placeholder="Pl: Volvo B13R"
+                maxLength={50}
               />
               {errors.model && <ErrorMessage>{errors.model}</ErrorMessage>}
             </InputWithError>
@@ -155,8 +157,8 @@ export function CreateBusForm({ initial, onSubmit, onClose, open, submitLabel = 
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
               >
-                <option value="operational">Operational</option>
-                <option value="maintenance">Maintenance</option>
+                <option value="operational">Üzemképes</option>
+                <option value="maintenance">Karbantartás alatt áll</option>
               </Select>
               {errors.status && <ErrorMessage>{errors.status}</ErrorMessage>}
             </InputWithError>

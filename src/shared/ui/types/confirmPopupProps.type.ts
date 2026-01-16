@@ -8,5 +8,6 @@ export type ConfirmPopupProps = {
     cancelLabel?: string;
     loading?: boolean;
     style?: CSSProperties;
+    isAbsolutePosition?: boolean;
 };
 

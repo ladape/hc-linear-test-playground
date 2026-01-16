@@ -7,13 +7,13 @@ import {
 import { useState } from 'react';
 import { TaskColumn, useBoardQuery, useBoardMutations } from '../modules/tasks';
 import type { Task, TaskStatus } from '../modules/tasks';
-import { Page, Card, Title, Header } from '../shared/common/styles/common.style';
-import { Box, TextField, Button } from '@mui/material';
+import { Page, Card, Title, Header, Input, Button } from '../shared/common';
+import { Box } from '@mui/material';
 import {
-  columnsContainerStyle,
-  dragPreviewStyle,
-  dragHandleStyle,
-  dragPreviewTitleStyle
+    columnsContainerStyle,
+    dragPreviewStyle,
+    dragHandleStyle,
+    dragPreviewTitleStyle
 } from '../modules/tasks/style/kanban.style';
 
 const COLUMNS: { id: TaskStatus; title: string }[] = [
@@ -83,33 +83,14 @@ export function TasksPage() {
             <Header>
                 <Title variant="h4">Feladatok</Title>
                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                    <TextField
-                        size="small"
+                    <Input
                         placeholder="Új feladat címe"
                         value={newTitle}
                         onChange={(e) => setNewTitle(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            color: 'var(--text-color-light)',
-                            backgroundColor: 'var(--main-color)',
-                            '& fieldset': {
-                              borderColor: 'var(--border-color)',
-                            },
-                            '&:hover fieldset': {
-                              borderColor: 'var(--primary-color-hover)',
-                            },
-                            '&.Mui-focused fieldset': {
-                              borderColor: 'var(--primary-color)',
-                            },
-                          },
-                          '& .MuiOutlinedInput-input::placeholder': {
-                            color: 'var(--text-color-lighter)',
-                            opacity: 1,
-                          },
-                        }}
+                        style={{ maxWidth: '300px' }}
                     />
-                    <Button variant="contained" color="success" onClick={handleAddTask}>Hozzáadás</Button>
+                    <Button variant="contained" onClick={handleAddTask}>Hozzáadás</Button>
                 </Box>
             </Header>
 

@@ -24,12 +24,14 @@ export const Card = styled(Paper)({
   backdropFilter: 'blur(6px)',
   border: '1px solid rgba(255,255,255,0.06)',
   boxShadow: '0 6px 18px rgba(0,0,0,0.35)',
+  overflow: 'auto',
 });
 
 export const Title = styled(Typography)({
   fontWeight: 700,
   color: 'var(--primary-color)',
   letterSpacing: '.4px',
+  marginRight: '10px',
 });
 
 export const Subtitle = styled(Typography)({
@@ -38,6 +40,7 @@ export const Subtitle = styled(Typography)({
 
 export const TableContainer = styled('div')({
   overflowX: 'auto',
+  minWidth: '825px',
 });
 
 export const TableStyle = styled('table')({

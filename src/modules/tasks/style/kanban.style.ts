@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 export const columnsContainerStyle: CSSProperties = {
   display: 'flex',
   gap: 16,
+  maxWidth: '815px'
 };
 
 export const dragPreviewStyle: CSSProperties = {

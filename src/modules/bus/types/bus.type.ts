@@ -5,4 +5,3 @@ export type Bus = {
   status: string;
   capacity: number;
 };
-
