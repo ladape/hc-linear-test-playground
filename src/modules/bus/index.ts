@@ -10,6 +10,9 @@ export { useBusesMutations } from './hooks/useBusesMutations';
 export { BusTable } from './components/BusTable';
 export { BusRow } from './components/BusRow';
 export { CreateBusForm } from './components/CreateBusForm';
+export { BusBoardComponent } from './components/BusBoardComponent';
+export { BusDetailComponent } from './components/BusDetailComponent';
+export { BusEditComponent } from './components/BusEditComponent';
 
 // Types
 export type { Bus } from './types/bus.type';
