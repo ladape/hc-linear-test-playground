@@ -29,13 +29,13 @@ export function Modal({ open, onClose, children, ariaLabel = 'Modal dialog' }: P
         aria-label={ariaLabel}
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: 'white',
+          background: 'var(--main-color)',
           padding: 20,
           minWidth: 360,
           maxWidth: '90%',
           boxSizing: 'border-box',
           borderRadius: 8,
-          color: '#0b1a26',
+          color: 'var(--text-color-dark)',
           boxShadow: '0 10px 40px rgba(0,0,0,0.4)',
         }}
       >

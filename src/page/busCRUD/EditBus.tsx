@@ -5,6 +5,7 @@ import { CreateBusForm } from './component/CreateBusForm';
 import type { Bus } from './types/bus.type';
 import { useState } from 'react';
 import { Page, Card } from './style/bus.style';
+import { loadingStyle } from './style/viewBus.style';
 
 export default function EditBus() {
   const { id } = useParams();
@@ -13,8 +14,8 @@ export default function EditBus() {
   const { updateBus } = useBusesMutations();
   const [open, setOpen] = useState(true);
 
-  if (isLoading) return <div style={{ color: 'white' }}>Betöltés...</div>;
-  if (!bus) return <div style={{ color: 'white' }}>Nincs ilyen busz</div>;
+  if (isLoading) return <div style={loadingStyle}>Betöltés...</div>;
+  if (!bus) return <div style={loadingStyle}>Nincs ilyen busz</div>;
 
   const handleSubmit = async (payload: Omit<Bus, 'id'>) => {
     await updateBus.mutateAsync({ id: Number(id), payload });

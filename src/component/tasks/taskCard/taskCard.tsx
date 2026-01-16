@@ -3,7 +3,13 @@ import { CSS } from '@dnd-kit/utilities';
 import { useState } from 'react';
 import type {Task} from "../../../types/task.type.ts";
 import { ConfirmPopup } from '../../ui/ConfirmPopup/ConfirmPopup';
-import { cardStyle, dragHandleStyle, titleStyle, deleteButtonStyle } from './style/taskCard.style';
+import {
+  getCardStyleWithTransform,
+  dragHandleStyle,
+  titleStyle,
+  deleteButtonStyle,
+  deleteButtonHoverStyle
+} from './style/taskCard.style';
 
 interface Props {
     task: Task;
@@ -17,12 +23,10 @@ export function TaskCard({ task, onDelete, activeId }: Props) {
 
     const [showConfirm, setShowConfirm] = useState(false);
     const [deleting, setDeleting] = useState(false);
+    const [deleteHover, setDeleteHover] = useState(false);
 
-    const style = {
-        ...cardStyle,
-        transform: transform ? CSS.Translate.toString(transform) : undefined,
-        visibility: activeId === task.id ? 'hidden' : 'visible',
-    } as const;
+    const transformString = transform ? CSS.Translate.toString(transform) : undefined;
+    const style = getCardStyleWithTransform(transformString, activeId === task.id);
 
     const handleDelete = async () => {
         setDeleting(true);
@@ -36,6 +40,8 @@ export function TaskCard({ task, onDelete, activeId }: Props) {
             setDeleting(false);
         }
     };
+
+    const deleteButtonCurrentStyle = deleteHover ? { ...deleteButtonStyle, ...deleteButtonHoverStyle } : deleteButtonStyle;
 
     return (
         <div ref={setNodeRef} style={style}>
@@ -51,8 +57,10 @@ export function TaskCard({ task, onDelete, activeId }: Props) {
             <button
                 aria-label="delete-task"
                 onClick={() => setShowConfirm((s) => !s)}
-                style={deleteButtonStyle}
+                style={deleteButtonCurrentStyle}
                 title="Törlés"
+                onMouseEnter={() => setDeleteHover(true)}
+                onMouseLeave={() => setDeleteHover(false)}
             >
                 🗑
             </button>

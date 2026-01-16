@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
+import { useState } from 'react';
 import type {ConfirmPopupProps} from "../../../types/confirmPopupProps.type.ts";
-import { containerStyleBase, confirmButtonStyle, cancelButtonStyle } from './style/confirmPopup.style';
+import { containerStyleBase, confirmButtonStyle, cancelButtonStyle, messageStyle, buttonsContainerStyle } from './style/confirmPopup.style';
 
 export function ConfirmPopup({
   message = 'Biztosan törölni szeretnéd?',
@@ -11,19 +12,44 @@ export function ConfirmPopup({
   loading = false,
   style,
 }: ConfirmPopupProps) {
+  const [confirmHover, setConfirmHover] = useState(false);
+  const [cancelHover, setCancelHover] = useState(false);
+
   const containerStyle: CSSProperties = {
     ...containerStyleBase,
     ...(style || {}),
   };
 
+  const confirmButtonCurrentStyle: CSSProperties = {
+    ...confirmButtonStyle,
+    opacity: confirmHover ? 0.9 : 1,
+  };
+
+  const cancelButtonCurrentStyle: CSSProperties = {
+    ...cancelButtonStyle,
+    backgroundColor: cancelHover ? 'var(--secondary-color-hover)' : 'var(--secondary-color)',
+  };
+
   return (
     <div style={containerStyle} role="dialog" aria-modal="true">
-      <div style={{ marginBottom: 8 }}>{message}</div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-        <button onClick={onCancel} style={cancelButtonStyle} disabled={loading}>
+      <div style={messageStyle}>{message}</div>
+      <div style={buttonsContainerStyle}>
+        <button
+          onClick={onCancel}
+          style={cancelButtonCurrentStyle}
+          disabled={loading}
+          onMouseEnter={() => setCancelHover(true)}
+          onMouseLeave={() => setCancelHover(false)}
+        >
           {cancelLabel}
         </button>
-        <button onClick={onConfirm} style={confirmButtonStyle} disabled={loading}>
+        <button
+          onClick={onConfirm}
+          style={confirmButtonCurrentStyle}
+          disabled={loading}
+          onMouseEnter={() => setConfirmHover(true)}
+          onMouseLeave={() => setConfirmHover(false)}
+        >
           {loading ? `${confirmLabel}...` : confirmLabel}
         </button>
       </div>

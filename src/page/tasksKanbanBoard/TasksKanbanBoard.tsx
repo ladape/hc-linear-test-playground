@@ -11,8 +11,13 @@ import { useBoardQuery } from '../../hooks/useTasksKanbanBoardQuery.ts';
 import { useBoardMutations } from '../../hooks/useTasksKanbanBoardMutations.ts';
 import { Page, Card, Title, Header } from '../busCRUD/style/bus.style.ts';
 import { Box, TextField, Button } from '@mui/material';
+import {
+  columnsContainerStyle,
+  dragPreviewStyle,
+  dragHandleStyle,
+  dragPreviewTitleStyle
+} from './style/kanban.style';
 
-// todo source out
 const COLUMNS: { id: TaskStatus; title: string }[] = [
     { id: 'todo', title: 'Teendő' },
     { id: 'in_progress', title: 'Folyamatban' },
@@ -58,6 +63,12 @@ export function KanbanBoard() {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+            handleAddTask();
+        }
+    };
+
     const handleDelete = async (id: number) => {
         try {
             await deleteTask.mutateAsync(id);
@@ -67,18 +78,6 @@ export function KanbanBoard() {
     };
 
     const activeTask = activeId != null ? (tasks as Task[]).find((t) => t.id === activeId) : null;
-
-    const previewStyle: React.CSSProperties = {
-        padding: 8,
-        background: '#fff',
-        borderRadius: 6,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        boxShadow: '0 6px 20px rgba(0,0,0,0.12)',
-        width: 230,
-        zIndex: 9999,
-    };
 
     return (
         <Page>
@@ -90,14 +89,34 @@ export function KanbanBoard() {
                         placeholder="Új feladat címe"
                         value={newTitle}
                         onChange={(e) => setNewTitle(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            color: 'var(--text-color-light)',
+                            backgroundColor: 'var(--main-color)',
+                            '& fieldset': {
+                              borderColor: 'var(--border-color)',
+                            },
+                            '&:hover fieldset': {
+                              borderColor: 'var(--primary-color-hover)',
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: 'var(--primary-color)',
+                            },
+                          },
+                          '& .MuiOutlinedInput-input::placeholder': {
+                            color: 'var(--text-color-lighter)',
+                            opacity: 1,
+                          },
+                        }}
                     />
-                    <Button variant="contained" color="primary" onClick={handleAddTask}>Hozzáadás</Button>
+                    <Button variant="contained" color="success" onClick={handleAddTask}>Hozzáadás</Button>
                 </Box>
             </Header>
 
             <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
               <Card>
-                <div style={{ display: 'flex', gap: 16 }}>
+                <div style={columnsContainerStyle}>
                     {COLUMNS.map((col) => (
                         <TaskColumn
                             key={col.id}
@@ -113,9 +132,9 @@ export function KanbanBoard() {
 
               <DragOverlay dropAnimation={{ duration: 0 }}>
                   {activeTask ? (
-                      <div style={previewStyle}>
-                          <div style={{ cursor: 'grab', padding: '4px 6px', borderRadius: 4, background: '#f4f6f8' }}>⠿</div>
-                          <div style={{ flex: 1 }}>{activeTask.title}</div>
+                      <div style={dragPreviewStyle}>
+                          <div style={dragHandleStyle}>⠿</div>
+                          <div style={dragPreviewTitleStyle}>{activeTask.title}</div>
                       </div>
                   ) : null}
               </DragOverlay>
@@ -123,3 +142,5 @@ export function KanbanBoard() {
         </Page>
     );
 }
+
+export default KanbanBoard;

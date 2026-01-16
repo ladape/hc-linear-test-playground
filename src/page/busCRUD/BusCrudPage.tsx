@@ -13,10 +13,6 @@ export default function BusCrudPage() {
   const [openCreate, setOpenCreate] = useState(false);
   const [editingBus, setEditingBus] = useState<Bus | null>(null);
 
-  const handleCreate = async (payload: Omit<Bus, 'id'>) => {
-    await createBus.mutateAsync(payload);
-  };
-
   const handleDelete = async (id: number) => {
     await deleteBus.mutateAsync(id);
   };
@@ -42,7 +38,7 @@ export default function BusCrudPage() {
     <Page>
       <Header>
         <Title variant="h4">Buszok kezelése</Title>
-        <Button variant="contained" color="primary" onClick={() => setOpenCreate(true)}>
+        <Button variant="contained" color="success" onClick={() => setOpenCreate(true)}>
           Új busz
         </Button>
       </Header>
@@ -50,6 +46,10 @@ export default function BusCrudPage() {
       <Card>
         {isLoading ? (
           <div>Betöltés...</div>
+        ) : buses.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-color-light)' }}>
+            Jelenleg nincsenek buszok a rendszerben.
+          </div>
         ) : (
           <TableContainer>
             <BusTable buses={buses} onDelete={handleDelete} onEdit={handleEdit} />
