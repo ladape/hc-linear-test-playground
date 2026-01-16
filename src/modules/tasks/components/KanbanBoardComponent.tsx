@@ -9,7 +9,8 @@ import {TaskColumn} from "./TaskColumn.tsx";
 import type {Task, TaskStatus} from "../types/task.type.ts";
 import { useBoardQuery } from '../hooks/useTasksKanbanBoardQuery.ts';
 import { useBoardMutations } from '../hooks/useTasksKanbanBoardMutations.ts';
-import { Box, TextField, Button } from '@mui/material';
+import { Box } from '@mui/material';
+import { Card, Input, Button } from '../../../shared/common';
 import {
   columnsContainerStyle,
   dragPreviewStyle,
@@ -23,12 +24,7 @@ const COLUMNS: { id: TaskStatus; title: string }[] = [
     { id: 'done', title: 'Kész' },
 ];
 
-interface KanbanBoardProps {
-    card?: any;
-    header?: any;
-}
-
-export function KanbanBoardComponent({ card: Card, header: Header }: KanbanBoardProps) {
+export function KanbanBoardComponent() {
     const { data: tasks = [] } = useBoardQuery();
     const { createTask, updateTaskStatus, deleteTask } = useBoardMutations();
 
@@ -84,59 +80,21 @@ export function KanbanBoardComponent({ card: Card, header: Header }: KanbanBoard
 
     const activeTask = activeId != null ? (tasks as Task[]).find((t) => t.id === activeId) : null;
 
-    const content = (
+    return (
         <>
-            {Header && (
-                <Header>
-                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                        <TextField
-                            size="small"
-                            placeholder="Új feladat címe"
-                            value={newTitle}
-                            onChange={(e) => setNewTitle(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            sx={{
-                              '& .MuiOutlinedInput-root': {
-                                color: 'var(--text-color-light)',
-                                backgroundColor: 'var(--main-color)',
-                                '& fieldset': {
-                                  borderColor: 'var(--border-color)',
-                                },
-                                '&:hover fieldset': {
-                                  borderColor: 'var(--primary-color-hover)',
-                                },
-                                '&.Mui-focused fieldset': {
-                                  borderColor: 'var(--primary-color)',
-                                },
-                              },
-                              '& .MuiOutlinedInput-input::placeholder': {
-                                color: 'var(--text-color-lighter)',
-                                opacity: 1,
-                              },
-                            }}
-                        />
-                        <Button variant="contained" color="success" onClick={handleAddTask}>Hozzáadás</Button>
-                    </Box>
-                </Header>
-            )}
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', marginBottom: 2 }}>
+                <Input
+                    placeholder="Új feladat címe"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    style={{ maxWidth: '300px' }}
+                />
+                <Button variant="contained" onClick={handleAddTask}>Hozzáadás</Button>
+            </Box>
 
             <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-              {Card ? (
-                <Card>
-                  <div style={columnsContainerStyle}>
-                      {COLUMNS.map((col) => (
-                          <TaskColumn
-                              key={col.id}
-                              id={col.id}
-                              title={col.title}
-                              tasks={(tasks as Task[]).filter((t) => t.status === col.id)}
-                              onDelete={(id) => handleDelete(id)}
-                              activeId={activeId}
-                          />
-                      ))}
-                  </div>
-                </Card>
-              ) : (
+              <Card>
                 <div style={columnsContainerStyle}>
                     {COLUMNS.map((col) => (
                         <TaskColumn
@@ -149,7 +107,7 @@ export function KanbanBoardComponent({ card: Card, header: Header }: KanbanBoard
                         />
                     ))}
                 </div>
-              )}
+              </Card>
 
               <DragOverlay dropAnimation={{ duration: 0 }}>
                   {activeTask ? (
@@ -162,9 +120,6 @@ export function KanbanBoardComponent({ card: Card, header: Header }: KanbanBoard
             </DndContext>
         </>
     );
-
-    return content;
 }
 
-export default KanbanBoardComponent;
 
